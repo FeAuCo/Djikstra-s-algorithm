@@ -3,36 +3,27 @@ package io.github.FeAuCo.node_related;
 import java.util.ArrayList;
 
 public class Node {
-    private ArrayList<Node> nodeBonds = new ArrayList<>();
+    private ArrayList<Node> frontier = new ArrayList<>();
     private NodeTypes type;
     private float value;
-    private float[] coordinates = new float[2];
+    private int[] coordinates = new int[2];
 
 
-    Node(NodeTypes type, float value, float[] coordinates, ArrayList<Node> nodeBonds){
+    public Node(NodeTypes type, int[] coordinates) {
         this.type = type;
-        this.value = value;
-        this.nodeBonds = nodeBonds;
         this.coordinates = coordinates;
     }
 
 
-    public String getTexture(NodeTypes type){
-        return switch (type){
-            case START -> "start_node_dot.png";
-            case EMPTY -> "empty_node_gray.png";
-            case VISITED -> "visited_node_green.png";
-            case BARRIER -> "barrier_node_brown.png";
-            case END -> "end_node_cross.png";
-        };
+    public String getTexture() {
+        return type.getTexture();
     }
-
 
     public ArrayList<Node> getNodeBonds() {
-        return nodeBonds;
+        return frontier;
     }
 
-    public float[] getCoordinates() {
+    public int[] getCoordinates() {
         return coordinates;
     }
 
@@ -41,22 +32,18 @@ public class Node {
     }
 
     public float getValue() {
-        return value;
+        return type.equals(NodeTypes.BARRIER) || type.equals(NodeTypes.START) ? type.getValue() : value;
     }
 
     public void setNodeType(NodeTypes type) {
         this.type = type;
     }
 
-    public void setValue(int value) {
+    public void setValue(float value) {
         this.value = value;
     }
 
-    public void addNodeBonds(Node node) {
-        this.nodeBonds.add(node);
-    }
-
-    public void setCoordinates(float[] coordinates) {
-        this.coordinates = coordinates;
+    public void addNode(Node node) {
+        this.frontier.add(node);
     }
 }
