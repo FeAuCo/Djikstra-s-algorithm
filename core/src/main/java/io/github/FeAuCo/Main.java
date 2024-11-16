@@ -1,6 +1,7 @@
 package io.github.FeAuCo;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -18,6 +19,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         createField();
+        Gdx.graphics.setContinuousRendering(false);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class Main extends ApplicationAdapter {
 
             for (Node[] nodeArray : nodes){
                 for (Node node : nodeArray){
+                    Gdx.graphics.requestRendering();
                     batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
                 }
             }
@@ -57,7 +60,6 @@ public class Main extends ApplicationAdapter {
                 coordinates[0] = coordinateX;
 
                 Node node = new Node(NodeTypes.EMPTY, coordinates);
-                node.setValue(0);
 
                 innerNodes[nodeIndex] = node;
                 nodeIndex += 1;

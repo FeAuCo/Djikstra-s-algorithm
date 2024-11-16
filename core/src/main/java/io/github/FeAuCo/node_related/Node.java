@@ -3,10 +3,21 @@ package io.github.FeAuCo.node_related;
 import java.util.ArrayList;
 
 public class Node {
-    private ArrayList<Node> frontier = new ArrayList<>();
+    private ArrayList<Node> frontier;
     private NodeTypes type;
     private float value;
     private int[] coordinates;
+    private Node previousNode;
+
+    public Node(){
+        frontier = new ArrayList<>();
+        if (type.equals(NodeTypes.START)){
+            value = 0;
+        }
+        else{
+            value = Float.POSITIVE_INFINITY;
+        }
+    }
 
 
     public Node(NodeTypes type, int[] coordinates) {
@@ -32,7 +43,11 @@ public class Node {
     }
 
     public float getValue() {
-        return type.equals(NodeTypes.BARRIER) || type.equals(NodeTypes.START) ? type.getValue() : value;
+        return value;
+    }
+
+    public Node getPreviousNode() {
+        return previousNode;
     }
 
     public void setNodeType(NodeTypes type) {
@@ -45,5 +60,9 @@ public class Node {
 
     public void addNode(Node node) {
         this.frontier.add(node);
+    }
+
+    public void setPreviousNode(Node previousNode) {
+        this.previousNode = previousNode;
     }
 }
