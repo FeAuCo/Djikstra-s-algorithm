@@ -20,7 +20,7 @@ public class Lwjgl3Launcher {
         configuration.setTitle("Djikstras algorithm");
         configuration.useVsync(true);
         configuration.setForegroundFPS(2);
-        configuration.setWindowedMode(890, 730);
+        configuration.setWindowedMode(890, 800);
         configuration.setResizable(false);
 
         configuration.setWindowIcon("icon.png");

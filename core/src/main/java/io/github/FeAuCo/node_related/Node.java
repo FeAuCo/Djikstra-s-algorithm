@@ -1,37 +1,22 @@
 package io.github.FeAuCo.node_related;
 
-import java.util.ArrayList;
-
 public class Node {
-    private ArrayList<Node> frontier;
     private NodeTypes type;
     private float value;
     private int[] coordinates;
+    private int[] indices;
     private Node previousNode;
 
-    public Node(){
-        frontier = new ArrayList<>();
-        if (type.equals(NodeTypes.START)){
-            value = 0;
-        }
-        else{
-            value = Float.POSITIVE_INFINITY;
-        }
-    }
-
-
-    public Node(NodeTypes type, int[] coordinates) {
-        this.type = type;
+    public Node(int[] coordinates, int[] indices){
         this.coordinates = coordinates;
-    }
+        this.indices = indices;
 
+        value = Float.POSITIVE_INFINITY;
+        type = NodeTypes.EMPTY;
+    }
 
     public String getTexture() {
         return type.getTexture();
-    }
-
-    public ArrayList<Node> getNodeBonds() {
-        return frontier;
     }
 
     public int[] getCoordinates() {
@@ -50,16 +35,16 @@ public class Node {
         return previousNode;
     }
 
+    public int[] getIndices() {
+        return indices;
+    }
+
     public void setNodeType(NodeTypes type) {
         this.type = type;
     }
 
     public void setValue(float value) {
         this.value = value;
-    }
-
-    public void addNode(Node node) {
-        this.frontier.add(node);
     }
 
     public void setPreviousNode(Node previousNode) {

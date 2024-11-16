@@ -38,6 +38,9 @@ public class Main extends ApplicationAdapter {
             fieldRenderCount += 1;
         }
         batch.end();
+
+
+
     }
 
     @Override
@@ -49,7 +52,8 @@ public class Main extends ApplicationAdapter {
     private static void createField(){
         int coordinateX = 6;
         int coordinateY = 8;
-        int nodeIndex = 0;
+        int nodeIndexX = 0;
+        int nodeIndexY = 0;
         int[] coordinates = {6, 8};
         Node[] innerNodes = new Node[42];
 
@@ -59,10 +63,11 @@ public class Main extends ApplicationAdapter {
             while (coordinateX != 888) {
                 coordinates[0] = coordinateX;
 
-                Node node = new Node(NodeTypes.EMPTY, coordinates);
+                int[] indices = {nodeIndexX, nodeIndexY};
+                Node node = new Node(coordinates, indices);
 
-                innerNodes[nodeIndex] = node;
-                nodeIndex += 1;
+                innerNodes[nodeIndexX] = node;
+                nodeIndexX += 1;
 
                 coordinateX += 21;
 
@@ -75,7 +80,9 @@ public class Main extends ApplicationAdapter {
 
             innerNodes = innerNodes.clone();
 
-            nodeIndex = 0;
+            nodeIndexX = 0;
+            nodeIndexY += 1;
         }
     }
 }
+
