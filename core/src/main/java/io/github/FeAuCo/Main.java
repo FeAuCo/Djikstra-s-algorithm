@@ -11,20 +11,28 @@ import java.util.ArrayList;
 
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
-    private boolean fieldDone = false;
+    private int fieldRenderCount = 0;
+    static ArrayList<Node[]> nodes = new ArrayList<>();
 
     @Override
     public void create() {
         batch = new SpriteBatch();
+        createField();
     }
 
     @Override
     public void render() {
         batch.begin();
-        if (!fieldDone) {
+        if (fieldRenderCount != 2) {
             ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-            createField();
-            fieldDone = true;
+
+            for (Node[] nodeArray : nodes){
+                for (Node node : nodeArray){
+                    batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
+                }
+            }
+
+            fieldRenderCount += 1;
         }
         batch.end();
     }
@@ -35,26 +43,37 @@ public class Main extends ApplicationAdapter {
     }
 
 
-    private void createField(){
+    private static void createField(){
         int coordinateX = 6;
         int coordinateY = 8;
+        int nodeIndex = 0;
         int[] coordinates = {6, 8};
-        ArrayList<Node> nodes = new ArrayList<>();
+        Node[] innerNodes = new Node[42];
 
         while (coordinateY != 722){
+            coordinates[1] = coordinateY;
+
             while (coordinateX != 888) {
                 coordinates[0] = coordinateX;
 
                 Node node = new Node(NodeTypes.EMPTY, coordinates);
                 node.setValue(0);
-                nodes.add(node);
-                batch.draw(new Texture(node.getTexture()), coordinateX, coordinateY);
+
+                innerNodes[nodeIndex] = node;
+                nodeIndex += 1;
+
                 coordinateX += 21;
+
+                coordinates = coordinates.clone();
             }
+            nodes.add(innerNodes);
+
             coordinateX = 6;
             coordinateY += 21;
-            coordinates[1] = coordinateY;
+
+            innerNodes = innerNodes.clone();
+
+            nodeIndex = 0;
         }
     }
 }
-

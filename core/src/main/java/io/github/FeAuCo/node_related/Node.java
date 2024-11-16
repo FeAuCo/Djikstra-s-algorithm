@@ -6,7 +6,7 @@ public class Node {
     private ArrayList<Node> frontier = new ArrayList<>();
     private NodeTypes type;
     private float value;
-    private int[] coordinates = new int[2];
+    private int[] coordinates;
 
 
     public Node(NodeTypes type, int[] coordinates) {
