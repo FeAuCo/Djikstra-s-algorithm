@@ -6,10 +6,10 @@ import io.github.FeAuCo.node_related.NodeTypes;
 import java.util.ArrayList;
 
 public class Djikstra {
-    private static ArrayList<Node> frontier;
-    private static ArrayList<Node> agents;
-
     private static void run(ArrayList<Node[]> nodes, Node startNode){
+        ArrayList<Node> frontier = new ArrayList<>();
+        ArrayList<Node> agents = new ArrayList<>();
+
         agents.add(startNode);
 
         boolean end = false;
@@ -21,7 +21,7 @@ public class Djikstra {
                     break;
                 }
 
-                frontier.addAll(extendFrontier(nodes, frontier, agent));
+                frontier.addAll(updateFrontier(nodes, agent));
 
 
             }
@@ -33,14 +33,20 @@ public class Djikstra {
         }
     }
 
-    private static ArrayList<Node> extendFrontier(ArrayList<Node[]> nodes, ArrayList<Node> frontier,Node agent){
+    private static ArrayList<Node> updateFrontier(ArrayList<Node[]> nodes, Node agent){
+        ArrayList<Node> newFrontier = new ArrayList<>();
+
         if (agent.getCoordinates()[1] < 701){
             if (!nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.VISITED) ||
                 !nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER) ||
                 !nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.START)){
 
                 nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].setPreviousNode(agent);
-                frontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]]);
+                newFrontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]]);
+
+                if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getValue() > agent.getValue()){
+                    nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].setValue(agent.getValue() + 1);
+                }
             }
         }
 
@@ -50,7 +56,11 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.START)){
 
                 nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].setPreviousNode(agent);
-                frontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]]);
+                newFrontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]]);
+
+                if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getValue() > agent.getValue()){
+                    nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].setValue(agent.getValue() + 1);
+                }
             }
         }
 
@@ -60,7 +70,11 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.START)){
 
                 nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].setPreviousNode(agent);
-                frontier.add(nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1]);
+                newFrontier.add(nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1]);
+
+                if (nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getValue() > agent.getValue()){
+                    nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].setValue(agent.getValue() + 1);
+                }
             }
         }
 
@@ -70,7 +84,11 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.START)){
 
                 nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].setPreviousNode(agent);
-                frontier.add(nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1]);
+                newFrontier.add(nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1]);
+
+                if (nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getValue() > agent.getValue()){
+                    nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].setValue(agent.getValue() + 1);
+                }
             }
         }
 
@@ -90,7 +108,11 @@ public class Djikstra {
 
 
                     nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].setPreviousNode(agent);
-                    frontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1]);
+                    newFrontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1]);
+
+                    if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].getValue() > agent.getValue()){
+                        nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].setValue(agent.getValue() + (float) 1.41421356237);
+                    }
                 }
             }
         }
@@ -110,7 +132,11 @@ public class Djikstra {
 
 
                     nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].setPreviousNode(agent);
-                    frontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1]);
+                    newFrontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1]);
+
+                    if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].getValue() > agent.getValue()){
+                        nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].setValue(agent.getValue() + (float) 1.41421356237);
+                    }
                 }
             }
         }
@@ -130,7 +156,11 @@ public class Djikstra {
 
 
                     nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].setPreviousNode(agent);
-                    frontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1]);
+                    newFrontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1]);
+
+                    if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].getValue() > agent.getValue()){
+                        nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].setValue(agent.getValue() + (float) 1.41421356237);
+                    }
                 }
             }
         }
@@ -150,13 +180,15 @@ public class Djikstra {
 
 
                     nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].setPreviousNode(agent);
-                    frontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1]);
+                    newFrontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1]);
+
+                    if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].getValue() > agent.getValue()){
+                        nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].setValue(agent.getValue() + (float) 1.41421356237);
+                    }
                 }
             }
         }
 
-
-
-        return frontier;
+        return newFrontier;
     }
 }

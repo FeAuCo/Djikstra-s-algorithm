@@ -3,8 +3,8 @@ package io.github.FeAuCo.node_related;
 public class Node {
     private NodeTypes type;
     private float value;
-    private int[] coordinates;
-    private int[] indices;
+    private final int[] coordinates;
+    private final int[] indices;
     private Node previousNode;
 
     public Node(int[] coordinates, int[] indices){

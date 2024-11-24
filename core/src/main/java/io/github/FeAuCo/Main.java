@@ -39,8 +39,6 @@ public class Main extends ApplicationAdapter {
         }
         batch.end();
 
-
-
     }
 
     @Override
