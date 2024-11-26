@@ -10,8 +10,10 @@ import io.github.FeAuCo.node_related.NodeTypes;
 
 import java.util.ArrayList;
 
+import static io.github.FeAuCo.algorithms.Djikstra.batch;
+import static io.github.FeAuCo.algorithms.Djikstra.run;
+
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
     private int fieldRenderCount = 0;
     static ArrayList<Node[]> nodes = new ArrayList<>();
 
@@ -19,7 +21,29 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         createField();
+
+//        nodes.getFirst()[0].setNodeType(NodeTypes.START);
+//        nodes.getFirst()[0].setValue(0);
+//        nodes.get(4)[0].setNodeType(NodeTypes.END);
+
         Gdx.graphics.setContinuousRendering(false);
+
+        Gdx.graphics.requestRendering();
+
+        batch.begin();
+
+//        run(nodes, nodes.getFirst()[0]);
+
+//        for (Node[] nodeList : nodes.reversed()){
+//            for (Node node : nodeList){
+//                System.out.print("(");
+//                System.out.print(node.getPreviousNode() != null ? node.getPreviousNode().getIndices()[0] + " " : node.getNodeType() + ") ");
+//                System.out.print(node.getPreviousNode() != null ? node.getPreviousNode().getIndices()[1] + ") " : "");
+//            }
+//            System.out.println();
+//        }
+
+        batch.end();
     }
 
     @Override
@@ -27,13 +51,8 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         if (fieldRenderCount != 2) {
             ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
-            for (Node[] nodeArray : nodes){
-                for (Node node : nodeArray){
-                    Gdx.graphics.requestRendering();
-                    batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
-                }
-            }
+            Gdx.graphics.requestRendering();
+            renderNodes(batch);
 
             fieldRenderCount += 1;
         }
@@ -46,6 +65,14 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
     }
 
+    public static void renderNodes(SpriteBatch batch){
+        for (Node[] nodeArray : nodes){
+            for (Node node : nodeArray){
+                Gdx.graphics.requestRendering();
+                batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
+            }
+        }
+    }
 
     private static void createField(){
         int coordinateX = 6;
@@ -62,6 +89,7 @@ public class Main extends ApplicationAdapter {
                 coordinates[0] = coordinateX;
 
                 int[] indices = {nodeIndexX, nodeIndexY};
+
                 Node node = new Node(coordinates, indices);
 
                 innerNodes[nodeIndexX] = node;

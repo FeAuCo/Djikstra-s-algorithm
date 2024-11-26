@@ -1,6 +1,6 @@
 package io.github.FeAuCo.node_related;
 
-public class Node {
+public class Node implements Cloneable{
     private NodeTypes type;
     private float value;
     private final int[] coordinates;
@@ -13,6 +13,16 @@ public class Node {
 
         value = Float.POSITIVE_INFINITY;
         type = NodeTypes.EMPTY;
+    }
+
+    @Override
+    public Node clone() {
+        try {
+            return (Node) super.clone();
+        }
+        catch (CloneNotSupportedException cnse){
+            return null;
+        }
     }
 
     public String getTexture() {

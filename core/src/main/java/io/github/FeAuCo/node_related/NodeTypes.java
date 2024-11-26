@@ -5,7 +5,8 @@ public enum NodeTypes {
     EMPTY("empty_node_gray.png"),
     VISITED("visited_node_green.png"),
     BARRIER("barrier_node_brown.png"),
-    END("end_node_cross.png");
+    END("end_node_cross.png"),
+    PATH("path_node_yellow.png");
 
     final String texture;
 
