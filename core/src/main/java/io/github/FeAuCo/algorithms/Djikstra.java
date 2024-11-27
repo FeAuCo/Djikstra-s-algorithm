@@ -14,14 +14,17 @@ public class Djikstra {
     public static void run(ArrayList<Node[]> nodes, Node startNode) {
         ArrayList<Node> frontier = new ArrayList<>();
         ArrayList<Node> agents = new ArrayList<>();
+        Node endNode = new Node(null, null);
 
         agents.add(startNode);
 
         boolean end = false;
+        boolean noRoute = false;
 
-        while (!end){
-            for (Node agent : agents){
-                if (agent.getNodeType().equals(NodeTypes.END)){
+        while (!end) {
+            for (Node agent : agents) {
+                if (agent.getNodeType().equals(NodeTypes.END)) {
+                    endNode = agent.getPreviousNode();
                     end = true;
                     break;
                 }
@@ -33,33 +36,25 @@ public class Djikstra {
                 }
             }
 
-            agents.clear();
-
-            if (frontier.isEmpty()){
-                // NO ROUTE
+            if (frontier.isEmpty()) {
+                noRoute = true;
                 break;
             }
 
-            for (Node node : frontier){
-                if (node.getPreviousNode() != null) {
-                    node.setPreviousNode(node.getPreviousNode().clone());
-                }
-                agents.add(node.clone());
-            }
+            agents = new ArrayList<>(frontier);
 
             frontier.clear();
         }
 
-
-//        Node agent = nodes.get(4)[0].getPreviousNode();
-//
-//        while (true){
-//            if (agent.getPreviousNode() == null){
-//                break;
-//            }
-//            nodes.get(agent.getIndices()[1])[agent.getIndices()[0]].setNodeType(NodeTypes.PATH);
-//            agent = agent.getPreviousNode().clone();
-//        }
+        if (!noRoute){
+            while (true) {
+                if (endNode.getPreviousNode() == null) {
+                    break;
+                }
+                nodes.get(endNode.getIndices()[1])[endNode.getIndices()[0]].setNodeType(NodeTypes.PATH);
+                endNode = endNode.getPreviousNode().clone();
+            }
+        }
     }
 
     private static ArrayList<Node> updateFrontier(ArrayList<Node[]> nodes, Node agent) {
@@ -75,10 +70,9 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER) &&
                 !nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.START)){
 
-                nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].setPreviousNode(agent);
-
                 if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getValue() > agent.getValue() + 1){
                     nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].setValue(agent.getValue() + 1);
+                    nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].setPreviousNode(agent);
                 }
 
                 newFrontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]]);
@@ -90,10 +84,9 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER) &&
                 !nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.START)){
 
-                nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].setPreviousNode(agent);
-
                 if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getValue() > agent.getValue() + 1){
                     nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].setValue(agent.getValue() + 1);
+                    nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].setPreviousNode(agent);
                 }
 
                 newFrontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]]);
@@ -105,10 +98,9 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.BARRIER) &&
                 !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.START)){
 
-                nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].setPreviousNode(agent);
-
                 if (nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getValue() > agent.getValue() + 1){
                     nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].setValue(agent.getValue() + 1);
+                    nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].setPreviousNode(agent);
                 }
 
                 newFrontier.add(nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1]);
@@ -120,10 +112,9 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.BARRIER) &&
                 !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.START)){
 
-                nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].setPreviousNode(agent);
-
                 if (nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getValue() > agent.getValue() + 1){
                     nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].setValue(agent.getValue() + 1);
+                    nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].setPreviousNode(agent);
                 }
 
                 newFrontier.add(nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1]);
@@ -137,13 +128,12 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.START)){
 
                 if (!nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
-                    &&
+                    ||
                     !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.BARRIER)){
-
-                    nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].setPreviousNode(agent);
 
                     if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].getValue() > agent.getValue() + (float) 1.4){
                         nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].setValue(agent.getValue() + (float) 1.4);
+                        nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1].setPreviousNode(agent);
                     }
 
                     newFrontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] + 1]);
@@ -157,13 +147,12 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.START)){
 
                 if (!nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
-                    &&
+                    ||
                     !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.BARRIER)){
-
-                    nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].setPreviousNode(agent);
 
                     if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].getValue() > agent.getValue() + (float) 1.4){
                         nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].setValue(agent.getValue() + (float) 1.4);
+                        nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1].setPreviousNode(agent);
                     }
 
                     newFrontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] - 1]);
@@ -176,14 +165,14 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.BARRIER) &&
                 !nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.START)){
 
-                if (!nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
-                    &&
-                    !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.BARRIER)){
-
-                    nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].setPreviousNode(agent);
+                if ((!nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
+                    ||
+                    !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.BARRIER))
+                    ){
 
                     if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].getValue() > agent.getValue() + (float) 1.4){
                         nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].setValue(agent.getValue() + (float) 1.4);
+                        nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].setPreviousNode(agent);
                     }
 
                     newFrontier.add(nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1]);
@@ -197,13 +186,13 @@ public class Djikstra {
                 !nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.START)){
 
                 if (!nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
-                    &&
-                    !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.BARRIER)){
-
-                    nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].setPreviousNode(agent);
+                    ||
+                    !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.BARRIER)
+                    ){
 
                     if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].getValue() > agent.getValue() + (float) 1.4){
                         nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].setValue(agent.getValue() + (float) 1.4);
+                        nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].setPreviousNode(agent);
                     }
 
                     newFrontier.add(nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1]);

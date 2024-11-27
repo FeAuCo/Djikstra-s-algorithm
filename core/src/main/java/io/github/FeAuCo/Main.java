@@ -22,26 +22,12 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         createField();
 
-//        nodes.getFirst()[0].setNodeType(NodeTypes.START);
-//        nodes.getFirst()[0].setValue(0);
-//        nodes.get(4)[0].setNodeType(NodeTypes.END);
-
         Gdx.graphics.setContinuousRendering(false);
 
         Gdx.graphics.requestRendering();
 
         batch.begin();
 
-//        run(nodes, nodes.getFirst()[0]);
-
-//        for (Node[] nodeList : nodes.reversed()){
-//            for (Node node : nodeList){
-//                System.out.print("(");
-//                System.out.print(node.getPreviousNode() != null ? node.getPreviousNode().getIndices()[0] + " " : node.getNodeType() + ") ");
-//                System.out.print(node.getPreviousNode() != null ? node.getPreviousNode().getIndices()[1] + ") " : "");
-//            }
-//            System.out.println();
-//        }
 
         batch.end();
     }
@@ -52,7 +38,6 @@ public class Main extends ApplicationAdapter {
         if (fieldRenderCount != 2) {
             ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
             Gdx.graphics.requestRendering();
-            renderNodes(batch);
 
             fieldRenderCount += 1;
         }
