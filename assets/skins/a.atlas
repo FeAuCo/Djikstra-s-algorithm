@@ -1,0 +1,30 @@
+
+a.png
+size: 32, 32
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+A_button_down
+  rotate: false
+  xy: 1, 1
+  size: 16, 8
+  split: 0, 0, 0, 0
+  orig: 16, 8
+  offset: 0, 0
+  index: -1
+A_button_hover
+  rotate: false
+  xy: 1, 11
+  size: 16, 8
+  split: 0, 0, 0, 0
+  orig: 16, 8
+  offset: 0, 0
+  index: -1
+A_button_up
+  rotate: false
+  xy: 1, 21
+  size: 16, 8
+  split: 0, 0, 0, 0
+  orig: 16, 8
+  offset: 0, 0
+  index: -1

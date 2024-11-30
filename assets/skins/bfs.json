@@ -1,0 +1,9 @@
+{
+"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+	"default": {
+		"up": "BFS_button_up",
+		"down": "BFS_button_down",
+		"over": "BFS_button_hover"
+	}
+}
+}

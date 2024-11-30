@@ -1,0 +1,30 @@
+
+dfs.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+DFS_button_down
+  rotate: false
+  xy: 1, 1
+  size: 64, 32
+  split: 0, 0, 0, 0
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+DFS_button_hover
+  rotate: false
+  xy: 1, 35
+  size: 64, 32
+  split: 0, 0, 0, 0
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+DFS_button_up
+  rotate: false
+  xy: 1, 69
+  size: 64, 32
+  split: 0, 0, 0, 0
+  orig: 64, 32
+  offset: 0, 0
+  index: -1

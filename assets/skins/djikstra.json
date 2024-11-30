@@ -1,0 +1,9 @@
+{
+"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+	"default": {
+		"up": "Djikstra_button_up",
+		"down": "Djikstra_button_down",
+		"over": "Djikstra_button_hover"
+	}
+}
+}

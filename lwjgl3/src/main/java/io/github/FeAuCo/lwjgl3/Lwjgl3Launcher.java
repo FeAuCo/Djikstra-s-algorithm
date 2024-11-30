@@ -18,8 +18,6 @@ public class Lwjgl3Launcher {
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Djikstras algorithm");
-        configuration.useVsync(true);
-        configuration.setForegroundFPS(2);
         configuration.setWindowedMode(890, 800);
         configuration.setResizable(false);
 
