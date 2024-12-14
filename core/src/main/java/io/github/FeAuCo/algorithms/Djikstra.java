@@ -47,10 +47,7 @@ public class Djikstra {
         }
 
         if (!noRoute){
-            while (true) {
-                if (endNode.getPreviousNode() == null) {
-                    break;
-                }
+            while (endNode.getPreviousNode() != null) {
                 nodes.get(endNode.getIndices()[1])[endNode.getIndices()[0]].setNodeType(NodeTypes.PATH);
                 endNode = endNode.getPreviousNode().clone();
             }
@@ -168,7 +165,7 @@ public class Djikstra {
                 if ((!nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
                     ||
                     !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] + 1].getNodeType().equals(NodeTypes.BARRIER))
-                    ){
+                ){
 
                     if (nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].getValue() > agent.getValue() + (float) 1.4){
                         nodes.get(agent.getIndices()[1] - 1)[agent.getIndices()[0] + 1].setValue(agent.getValue() + (float) 1.4);
@@ -188,7 +185,7 @@ public class Djikstra {
                 if (!nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0]].getNodeType().equals(NodeTypes.BARRIER)
                     ||
                     !nodes.get(agent.getIndices()[1])[agent.getIndices()[0] - 1].getNodeType().equals(NodeTypes.BARRIER)
-                    ){
+                ){
 
                     if (nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].getValue() > agent.getValue() + (float) 1.4){
                         nodes.get(agent.getIndices()[1] + 1)[agent.getIndices()[0] - 1].setValue(agent.getValue() + (float) 1.4);

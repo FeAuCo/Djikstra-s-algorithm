@@ -5,26 +5,24 @@ import io.github.FeAuCo.node_related.Node;
 public class GameStates {
     private static String choiceAlgorithmState;
 
-    private static boolean visitDiagonalNodes;
-
     private static Node StartNode;
-    private static Node BarrierNode;
-    private static Node EndNode;
+    private static boolean placeBarrier;
+    private static boolean placedEnd;
 
-    public static Node getBarrierNode() {
-        return BarrierNode;
+    public static boolean isPlacedEnd() {
+        return placedEnd;
     }
 
-    public static void setBarrierNode(Node barrierNode) {
-        BarrierNode = barrierNode;
+    public static void setPlacedEnd(boolean placedEnd) {
+        GameStates.placedEnd = placedEnd;
     }
 
-    public static Node getEndNode() {
-        return EndNode;
+    public static boolean isPlaceBarrier() {
+        return placeBarrier;
     }
 
-    public static void setEndNode(Node endNode) {
-        EndNode = endNode;
+    public static void setPlaceBarrier(boolean placeBarrier) {
+        GameStates.placeBarrier = placeBarrier;
     }
 
     public static Node getStartNode() {
@@ -33,14 +31,6 @@ public class GameStates {
 
     public static void setStartNode(Node startNode) {
         StartNode = startNode;
-    }
-
-    public static boolean isVisitDiagonalNodes() {
-        return visitDiagonalNodes;
-    }
-
-    public static void setVisitDiagonalNodes(boolean visitDiagonalNodes) {
-        GameStates.visitDiagonalNodes = visitDiagonalNodes;
     }
 
     public static String getChoiceAlgorithmState() {

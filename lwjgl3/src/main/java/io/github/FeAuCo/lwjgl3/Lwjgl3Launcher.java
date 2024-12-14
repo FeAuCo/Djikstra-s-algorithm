@@ -17,7 +17,7 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        configuration.setTitle("Djikstras algorithm");
+        configuration.setTitle("Algorithms visualization");
         configuration.setWindowedMode(890, 800);
         configuration.setResizable(false);
 

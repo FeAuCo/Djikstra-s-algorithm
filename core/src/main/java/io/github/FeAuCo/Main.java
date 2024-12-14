@@ -8,50 +8,62 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.FeAuCo.algorithms.Djikstra;
 import io.github.FeAuCo.node_related.Node;
-import io.github.FeAuCo.node_related.NodeTypes;
 
 import java.util.ArrayList;
 
+import static io.github.FeAuCo.UserInputProcessor.nodesToRender;
 import static io.github.FeAuCo.algorithms.Djikstra.batch;
-import static io.github.FeAuCo.algorithms.Djikstra.run;
 
 public class Main extends ApplicationAdapter {
     private static Stage stage;
 
-    private int fieldRenderCount = 0;
+    private final static UserInputProcessor inputProcessor = new UserInputProcessor();
+    private static boolean isInputProcessorSet = false;
+
+    private static int fieldRenderCount = 0;
     static ArrayList<Node[]> nodes = new ArrayList<>();
 
     @Override
     public void create() {
-        Gdx.graphics.setContinuousRendering(false);
-
         stage = new Stage(new ScreenViewport());
         batch = new SpriteBatch();
-
-        createField();
+        
         createButtons();
-
-//        switch (GameStates.getChoiceAlgorithmState()) {
-//            case "djikstra" -> Djikstra.run(nodes, GameStates.getStartNode());
-//////            case "bfs" -> BFS.run(nodes, GameStates.getStartNode());
-//////            case "dfs" -> DFS.run(nodes, GameStates.getStartNode());
-//////            case "a*" -> A.run(nodes, GameStates.getStartNode());
-//        }
+        createField();
     }
 
     @Override
     public void render() {
-        Gdx.graphics.requestRendering();
+        super.render();
+        batch.begin();
+
+        for (Node node : nodesToRender) {
+            batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
+        }
+
+        if (GameStates.getChoiceAlgorithmState() != null) {
+            if (!isInputProcessorSet) {
+                Gdx.input.setInputProcessor(inputProcessor);
+                isInputProcessorSet = true;
+            }
+            if (GameStates.getStartNode() != null && GameStates.isPlacedEnd()) {
+                switch (GameStates.getChoiceAlgorithmState()) {
+                    case "djikstra" -> Djikstra.run(nodes, GameStates.getStartNode());
+                    ////            case "bfs" -> BFS.run(nodes, GameStates.getStartNode());
+                    ////            case "dfs" -> DFS.run(nodes, GameStates.getStartNode());
+                    ////            case "a*" -> A.run(nodes, GameStates.getStartNode());
+                }
+            }
+        }
+
         stage.act();
         stage.draw();
 
-        batch.begin();
         if (fieldRenderCount != 2) {
             ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
             renderNodes();
@@ -69,7 +81,6 @@ public class Main extends ApplicationAdapter {
     public static void renderNodes(){
         for (Node[] nodeArray : nodes){
             for (Node node : nodeArray){
-                Gdx.graphics.requestRendering();
                 batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
             }
         }
@@ -121,51 +132,68 @@ public class Main extends ApplicationAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Button buttonDjikstra = new Button(skinDjikstra);
-        buttonDjikstra.setPosition(10,10);
+        buttonDjikstra.setPosition(50,737);
         stage.addActor(buttonDjikstra);
+
+
+        Button buttonBfs = new Button(skinBfs);
+        buttonBfs.setPosition(300,737);
+        stage.addActor(buttonBfs);
+
+
+        Button buttonDfs = new Button(skinDfs);
+        buttonDfs.setPosition(550,737);
+        stage.addActor(buttonDfs);
+
+
+        Button buttonA = new Button(skinA);
+        buttonA.setPosition(800,737);
+        buttonA.setWidth(48);
+        buttonA.setHeight(32);
+        stage.addActor(buttonA);
+
 
         buttonDjikstra.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameStates.setChoiceAlgorithmState("djikstra");
+                buttonDjikstra.setVisible(false);
+                buttonBfs.setVisible(false);
+                buttonDfs.setVisible(false);
+                buttonA.setVisible(false);
             }
         });
-
-
-        Button buttonBfs = new Button(skinBfs);
-        buttonBfs.setPosition(10,10);
-        stage.addActor(buttonBfs);
 
         buttonBfs.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameStates.setChoiceAlgorithmState("bfs");
+                buttonDjikstra.setVisible(false);
+                buttonBfs.setVisible(false);
+                buttonDfs.setVisible(false);
+                buttonA.setVisible(false);
             }
         });
 
-
-        Button buttonDfs = new Button(skinDfs);
-        buttonDfs.setPosition(10,10);
-        stage.addActor(buttonDfs);
-
-        buttonBfs.addListener(new ChangeListener() {
+        buttonDfs.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameStates.setChoiceAlgorithmState("dfs");
+                buttonDjikstra.setVisible(false);
+                buttonBfs.setVisible(false);
+                buttonDfs.setVisible(false);
+                buttonA.setVisible(false);
             }
         });
-
-
-        Button buttonA = new Button(skinA);
-        buttonA.setPosition(10,10);
-        buttonA.setWidth(48);
-        buttonA.setHeight(32);
-        stage.addActor(buttonA);
 
         buttonA.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameStates.setChoiceAlgorithmState("a*");
+                buttonDjikstra.setVisible(false);
+                buttonBfs.setVisible(false);
+                buttonDfs.setVisible(false);
+                buttonA.setVisible(false);
             }
         });
     }
