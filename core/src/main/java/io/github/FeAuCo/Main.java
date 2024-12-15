@@ -16,7 +16,6 @@ import io.github.FeAuCo.node_related.Node;
 
 import java.util.ArrayList;
 
-import static io.github.FeAuCo.UserInputProcessor.nodesToRender;
 import static io.github.FeAuCo.algorithms.Djikstra.batch;
 
 public class Main extends ApplicationAdapter {
@@ -26,13 +25,16 @@ public class Main extends ApplicationAdapter {
     private static boolean isInputProcessorSet = false;
 
     private static int fieldRenderCount = 0;
+    private static int nodesRenderCount = 0;
     static ArrayList<Node[]> nodes = new ArrayList<>();
+    public static ArrayList<Node> nodesToRender = new ArrayList<>();
+    private static boolean algorithmDone = false;
 
     @Override
     public void create() {
         stage = new Stage(new ScreenViewport());
         batch = new SpriteBatch();
-        
+
         createButtons();
         createField();
     }
@@ -42,21 +44,30 @@ public class Main extends ApplicationAdapter {
         super.render();
         batch.begin();
 
-        for (Node node : nodesToRender) {
-            batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
-        }
+//        if (nodesRenderCount != 3 && !nodesToRender.isEmpty()) {
+//            for (Node nodeToRender : nodesToRender) {
+//                batch.draw(new Texture(nodeToRender.getTexture()), nodeToRender.getCoordinates()[0], nodeToRender.getCoordinates()[1]);
+//            }
+//            nodesRenderCount += 1;
+//        }
+//
+//        if (nodesRenderCount == 3){
+//            nodesToRender.clear();
+//            nodesRenderCount = 0;
+//        }
 
         if (GameStates.getChoiceAlgorithmState() != null) {
             if (!isInputProcessorSet) {
                 Gdx.input.setInputProcessor(inputProcessor);
                 isInputProcessorSet = true;
             }
-            if (GameStates.getStartNode() != null && GameStates.isPlacedEnd()) {
+            if (GameStates.getStartNode() != null && GameStates.isPlacedEnd() && !algorithmDone) {
+                algorithmDone = true;
                 switch (GameStates.getChoiceAlgorithmState()) {
-                    case "djikstra" -> Djikstra.run(nodes, GameStates.getStartNode());
-                    ////            case "bfs" -> BFS.run(nodes, GameStates.getStartNode());
-                    ////            case "dfs" -> DFS.run(nodes, GameStates.getStartNode());
-                    ////            case "a*" -> A.run(nodes, GameStates.getStartNode());
+                    case "djikstra" -> Djikstra.runAlg(nodes, GameStates.getStartNode());
+                    ////            case "bfs" -> BFS.runAlg(nodes, GameStates.getStartNode());
+                    ////            case "dfs" -> DFS.runAlg(nodes, GameStates.getStartNode());
+                    ////            case "a*" -> A.runAlg(nodes, GameStates.getStartNode());
                 }
             }
         }
@@ -66,7 +77,7 @@ public class Main extends ApplicationAdapter {
 
         if (fieldRenderCount != 2) {
             ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-            renderNodes();
+            renderField();
             fieldRenderCount += 1;
         }
         batch.end();
@@ -78,7 +89,7 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
     }
 
-    public static void renderNodes(){
+    public static void renderField(){
         for (Node[] nodeArray : nodes){
             for (Node node : nodeArray){
                 batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);

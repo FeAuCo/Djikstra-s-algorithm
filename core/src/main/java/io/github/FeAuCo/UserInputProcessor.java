@@ -5,14 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import io.github.FeAuCo.node_related.Node;
 import io.github.FeAuCo.node_related.NodeTypes;
 
-import java.util.ArrayList;
-
 import static io.github.FeAuCo.Main.nodes;
+import static io.github.FeAuCo.Main.nodesToRender;
 import static io.github.FeAuCo.algorithms.Djikstra.batch;
 
 public class UserInputProcessor implements InputProcessor {
-    public static ArrayList<Node> nodesToRender = new ArrayList<>();
-
     @Override
     public boolean keyDown(int keycode) {
         return true;
@@ -44,18 +41,17 @@ public class UserInputProcessor implements InputProcessor {
                             node.setNodeType(NodeTypes.START);
                             node.setValue(0);
                             GameStates.setStartNode(node.clone());
+                            nodesToRender.add(node);
                         }
-                        else {
+                        else if (!node.getNodeType().equals(NodeTypes.START)) {
                             node.setNodeType(NodeTypes.END);
                             GameStates.setPlacedEnd(true);
+                            nodesToRender.add(node);
                         }
 
                         if (GameStates.isPlaceBarrier()){
                             node.setNodeType(NodeTypes.BARRIER);
                         }
-
-                        batch.draw(new Texture(node.getTexture()), node.getCoordinates()[0], node.getCoordinates()[1]);
-                        nodesToRender.add(node.clone());
                     }
                 }
             }
