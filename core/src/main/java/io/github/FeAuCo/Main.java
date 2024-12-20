@@ -44,17 +44,17 @@ public class Main extends ApplicationAdapter {
         super.render();
         batch.begin();
 
-//        if (nodesRenderCount != 3 && !nodesToRender.isEmpty()) {
-//            for (Node nodeToRender : nodesToRender) {
-//                batch.draw(new Texture(nodeToRender.getTexture()), nodeToRender.getCoordinates()[0], nodeToRender.getCoordinates()[1]);
-//            }
-//            nodesRenderCount += 1;
-//        }
-//
-//        if (nodesRenderCount == 3){
-//            nodesToRender.clear();
-//            nodesRenderCount = 0;
-//        }
+        if (nodesRenderCount != 3 && !nodesToRender.isEmpty()) {
+            for (Node nodeToRender : nodesToRender) {
+                batch.draw(new Texture(nodeToRender.getTexture()), nodeToRender.getCoordinates()[0], nodeToRender.getCoordinates()[1]);
+            }
+            nodesRenderCount += 1;
+        }
+
+        if (nodesRenderCount == 3){
+            nodesToRender.clear();
+            nodesRenderCount = 0;
+        }
 
         if (GameStates.getChoiceAlgorithmState() != null) {
             if (!isInputProcessorSet) {

@@ -7,7 +7,16 @@ public class GameStates {
 
     private static Node StartNode;
     private static boolean placeBarrier;
+    private static boolean placedBarrier;
     private static boolean placedEnd;
+
+    public static boolean isPlacedBarrier() {
+        return placedBarrier;
+    }
+
+    public static void setPlacedBarrier(boolean placedBarrier) {
+        GameStates.placedBarrier = placedBarrier;
+    }
 
     public static boolean isPlacedEnd() {
         return placedEnd;
