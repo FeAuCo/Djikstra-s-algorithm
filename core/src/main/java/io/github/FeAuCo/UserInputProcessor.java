@@ -31,7 +31,6 @@ public class UserInputProcessor implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         screenY = 800 - screenY;
 
-        batch.begin();
         if (!GameStates.isPlacedEnd() && button == Input.Buttons.LEFT){
             for (Node[] nodeArray : nodes){
                 for (Node node : nodeArray){
@@ -45,14 +44,14 @@ public class UserInputProcessor implements InputProcessor {
                             GameStates.setStartNode(node.clone());
                             nodesToRender.add(node.clone());
                         }
-                        else if (!GameStates.isPlaceBarrier()) {
+                        if (!GameStates.isPlaceBarrier() && GameStates.getStartNode() != null) {
                             if (!node.getNodeType().equals(NodeTypes.START)) {
                                 node.setNodeType(NodeTypes.END);
                                 GameStates.setPlacedEnd(true);
                                 nodesToRender.add(node.clone());
                             }
                         }
-                        else {
+                        if (GameStates.isPlaceBarrier() && GameStates.getStartNode() != null){
                             if (!node.getNodeType().equals(NodeTypes.START) && GameStates.isPlacedBarrier()) {
                                 node.setNodeType(NodeTypes.END);
                                 GameStates.setPlacedEnd(true);
@@ -63,24 +62,26 @@ public class UserInputProcessor implements InputProcessor {
                         if (GameStates.getStartNode() != null && GameStates.isPlaceBarrier() && !GameStates.isPlacedBarrier()){
                             node.setNodeType(NodeTypes.BARRIER);
                             nodesToRender.add(node.clone());
-                            GameStates.setPlacedBarrier(true); //
                         }
                     }
                 }
             }
         }
 
-        if (GameStates.getStartNode() != null && !GameStates.isPlacedEnd() && button == Input.Buttons.RIGHT){
-            GameStates.setPlaceBarrier(true);
-        }
-
         if (GameStates.getStartNode() != null && !GameStates.isPlacedEnd() && GameStates.isPlaceBarrier() && button == Input.Buttons.RIGHT){
             GameStates.setPlacedBarrier(true);
         }
 
-        batch.end();
+        if (GameStates.getStartNode() != null && !GameStates.isPlacedEnd() && button == Input.Buttons.RIGHT){
+            GameStates.setPlaceBarrier(true);
+        }
 
-        dragging = true;
+        if (button == Input.Buttons.LEFT) {
+            dragging = true;
+        }
+        else {
+            dragging = false;
+        }
         return true;
     }
 
@@ -98,6 +99,24 @@ public class UserInputProcessor implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (!dragging){
             return false;
+        }
+
+        screenY = 800 - screenY;
+
+        if (!GameStates.isPlacedEnd()){
+            for (Node[] nodeArray : nodes){
+                for (Node node : nodeArray){
+                    if (node.getCoordinates()[0] <= screenX && node.getCoordinates()[0] + 16 >= screenX
+                        &&
+                        node.getCoordinates()[1] <= screenY && node.getCoordinates()[1] + 16 >= screenY){
+
+                        if (GameStates.getStartNode() != null && GameStates.isPlaceBarrier() && !GameStates.isPlacedBarrier()){
+                            node.setNodeType(NodeTypes.BARRIER);
+                            nodesToRender.add(node.clone());
+                        }
+                    }
+                }
+            }
         }
 
         return true;

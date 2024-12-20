@@ -18,6 +18,7 @@ public class Djikstra {
     private static ArrayList<Node> agents = new ArrayList<>();
 
     private static Node endNode = new Node(null, null);
+    private static Node lastAgent = new Node(null, null);
 
     private static boolean end = false;
     private static boolean noRoute = false;
@@ -38,10 +39,14 @@ public class Djikstra {
                 }
 
                 else {
+                    end = true;
                     break;
                 }
+
+                lastAgent = agent.clone();
             }
-            if (frontier.isEmpty()) {
+
+            if (frontier.isEmpty() && updateFrontier(nodes, lastAgent) == null) {
                 noRoute = true;
                 break;
             }
@@ -88,7 +93,6 @@ public class Djikstra {
                         agent.setNodeType(NodeTypes.PATH);
                         nodesToRender.add(agent);
                     }
-                    end = true;
                     return null;
                 }
 
@@ -112,7 +116,6 @@ public class Djikstra {
                         agent.setNodeType(NodeTypes.PATH);
                         nodesToRender.add(agent);
                     }
-                    end = true;
                     return null;
                 }
 
@@ -136,7 +139,6 @@ public class Djikstra {
                         agent.setNodeType(NodeTypes.PATH);
                         nodesToRender.add(agent);
                     }
-                    end = true;
                     return null;
                 }
 
@@ -160,7 +162,6 @@ public class Djikstra {
                         agent.setNodeType(NodeTypes.PATH);
                         nodesToRender.add(agent);
                     }
-                    end = true;
                     return null;
                 }
 
@@ -189,7 +190,6 @@ public class Djikstra {
                             agent.setNodeType(NodeTypes.PATH);
                             nodesToRender.add(agent);
                         }
-                        end = true;
                         return null;
                     }
 
@@ -218,7 +218,6 @@ public class Djikstra {
                             agent.setNodeType(NodeTypes.PATH);
                             nodesToRender.add(agent);
                         }
-                        end = true;
                         return null;
                     }
 
@@ -248,7 +247,6 @@ public class Djikstra {
                             agent.setNodeType(NodeTypes.PATH);
                             nodesToRender.add(agent);
                         }
-                        end = true;
                         return null;
                     }
 
@@ -278,7 +276,6 @@ public class Djikstra {
                             agent.setNodeType(NodeTypes.PATH);
                             nodesToRender.add(agent);
                         }
-                        end = true;
                         return null;
                     }
 
