@@ -46,7 +46,7 @@ public class Djikstra {
                 lastAgent = agent.clone();
             }
 
-            if (frontier.isEmpty() && updateFrontier(nodes, lastAgent) == null) {
+            if (frontier.isEmpty() && !end) {
                 noRoute = true;
                 break;
             }
